@@ -23,7 +23,10 @@
 
 
 @property (nonatomic, readonly) NSInteger score;
-@property (nonatomic, strong, readonly) NSArray *previousMoveDescriptions;
+@property (nonatomic, readonly) NSUInteger cardMatchCount;
+@property (nonatomic, readonly) NSInteger lastMoveSelectionCost;
+@property (nonatomic, readonly) NSInteger lastMoveMatchPoints;
+@property (nonatomic, readonly) NSArray *cardsInLastMatch;
 
 
 @end

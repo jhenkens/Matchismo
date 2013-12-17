@@ -10,27 +10,20 @@
 
 @interface CardMatchingGame()
 
-@property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray *cards;
-@property (nonatomic, readwrite) NSUInteger matchCount;
 @property (nonatomic, strong) NSMutableArray *chosenCards;
-@property (nonatomic, strong, readwrite) NSMutableArray *previousMoves;
+
+//Public readonly, private readwrite
+@property (nonatomic, readwrite) NSInteger score;
+@property (nonatomic, readwrite) NSUInteger cardMatchCount;
+@property (nonatomic, readwrite) NSInteger lastMoveSelectionCost;
+@property (nonatomic, readwrite) NSInteger lastMoveMatchPoints;
+@property (nonatomic, readwrite) NSArray *cardsInLastMatch;
+
 
 @end
 
 @implementation CardMatchingGame
-
-
-- (NSArray *)previousMoveDescriptions
-{
-    return [self.previousMoves copy];
-}
-
-- (NSMutableArray *)previousMoves
-{
-    if (!_previousMoves) _previousMoves = [[NSMutableArray alloc] init];
-    return _previousMoves;
-}
 
 - (NSMutableArray *)cards
 {
@@ -67,8 +60,7 @@
         }
     }
     
-    self.matchCount = matchCount;
-    [self.previousMoves addObject:[NSString stringWithFormat:@"Game started with match size %d!", self.matchCount]];
+    self.cardMatchCount = matchCount;
     
     return self;
 }
@@ -94,6 +86,9 @@ static const double BASE_POINT_MULTIPLIER = 2.0;
 - (void)chooseCardAtIndex:(NSUInteger)index
 {
     Card *card = [self cardAtIndex:index];
+    self.lastMoveSelectionCost = 0;
+    self.lastMoveMatchPoints = 0;
+    self.cardsInLastMatch = nil;
     
     if (!card.isMatched)
     {
@@ -101,16 +96,18 @@ static const double BASE_POINT_MULTIPLIER = 2.0;
         {
             card.chosen = NO;
             [self.chosenCards removeObject:card];
-            [self.previousMoves addObject:[NSString stringWithFormat:@"Unselected %@", [card contents]]];
         }
         else
         {
-            [self.previousMoves addObject:[NSString stringWithFormat:@"Selected %@. %d point selection cost.", [card contents], COST_TO_CHOOSE]];
             int matchScore = 0;
-            
-            if ([self.chosenCards count] == self.matchCount - 1)
+            self.lastMoveSelectionCost = -1*COST_TO_CHOOSE;
+
+            if ([self.chosenCards count] == self.cardMatchCount - 1)
             {
+                self.cardsInLastMatch = [self.chosenCards arrayByAddingObject:card];
+                
                 matchScore += [card match:self.chosenCards];
+                
                 NSMutableArray *chosenCardsDuplicate = [self.chosenCards mutableCopy];
                 
                 Card *chosenCard = [chosenCardsDuplicate firstObject];
@@ -125,10 +122,7 @@ static const double BASE_POINT_MULTIPLIER = 2.0;
                 
                 if (matchScore)
                 {
-                    int pointsEarned = (int) (matchScore * MATCH_BONUS / (self.matchCount/BASE_POINT_MULTIPLIER));
-                    self.score += pointsEarned;
-                    NSLog(@"Move earned %d points", pointsEarned);
-                    [self.previousMoves addObject:[NSString stringWithFormat:@"%@ %@ match! %d points awarded!", card.contents, [self.chosenCards componentsJoinedByString:@" "], pointsEarned]];
+                    self.lastMoveMatchPoints = (int) (matchScore * MATCH_BONUS / (self.cardMatchCount/BASE_POINT_MULTIPLIER));
                     card.matched = YES;
                     for (Card *matchedCard in self.chosenCards)
                     {
@@ -138,9 +132,7 @@ static const double BASE_POINT_MULTIPLIER = 2.0;
                 }
                 else
                 {
-                    int pointsLost = (int) (MISMATCH_PENALTY * (self.matchCount/BASE_POINT_MULTIPLIER));
-                    self.score -= pointsLost;
-                    [self.previousMoves addObject:[NSString stringWithFormat:@"%@ %@ don't match! %d point penalty!", card.contents, [self.chosenCards componentsJoinedByString:@" "], pointsLost]];
+                    self.lastMoveMatchPoints = -1 * ((int) (MISMATCH_PENALTY * (self.cardMatchCount/BASE_POINT_MULTIPLIER)));
                     Card *unchosenCard = [self.chosenCards firstObject];
                     [self.chosenCards removeObjectAtIndex:0];
                     unchosenCard.chosen = NO;
@@ -151,11 +143,12 @@ static const double BASE_POINT_MULTIPLIER = 2.0;
             {
                 [self.chosenCards addObject:card];
             }
-            
-            self.score -= COST_TO_CHOOSE;
+
             card.chosen = YES;
         }
     }
+    self.score += self.lastMoveSelectionCost;
+    self.score += self.lastMoveMatchPoints;
 }
 
 
