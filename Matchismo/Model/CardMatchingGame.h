@@ -14,10 +14,16 @@
 - (instancetype)initWithCardCount:(NSUInteger)count
                          usingDeck:(Deck *)deck;
 
+- (instancetype)initWithCardCount:(NSUInteger)count
+                        usingDeck:(Deck *)deck
+                   withMatchCount:(NSUInteger)matchCount;
+
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (Card *)cardAtIndex:(NSUInteger)index;
 
 
 @property (nonatomic, readonly) NSInteger score;
+@property (nonatomic, strong, readonly) NSArray *previousMoveDescriptions;
+
 
 @end

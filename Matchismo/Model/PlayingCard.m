@@ -13,16 +13,18 @@
 - (NSInteger)match:(NSArray *)otherCards
 {
     int score = 0;
-    
-    if ([otherCards count] == 1){
-        PlayingCard *otherCard = [otherCards firstObject];
-        if (otherCard.rank == self.rank)
+
+    if ([otherCards count]){
+        for (PlayingCard *otherCard in otherCards)
         {
-            score = 4;
-        }
-        else if (otherCard.suit == self.suit)
-        {
-            score = 1;
+            if (otherCard.rank == self.rank)
+            {
+                score += 4;
+            }
+            else if (otherCard.suit == self.suit)
+            {
+                score += 1;
+            }
         }
     }
     
@@ -38,8 +40,7 @@
 
 + (NSArray *)validSuits
 {
-    return @[@"♠︎",@"♥︎",@"♦︎",@"♣︎"];
-}
+    return @[@"♣", @"♠", @"♦", @"♥"];}
 
 - (void)setSuit:(NSString *)suit
 {
