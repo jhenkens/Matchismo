@@ -14,8 +14,9 @@
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelector;
+//@property (weak, nonatomic) IBOutlet UILabel *previousMoveLabel;
+//@property (weak, nonatomic) IBOutlet UISlider *previousMoveSlider;
 @property (weak, nonatomic) IBOutlet UILabel *previousMoveLabel;
-@property (weak, nonatomic) IBOutlet UISlider *previousMoveSlider;
 
 @property (strong, nonatomic) NSMutableArray *previousMoves;
 
@@ -68,7 +69,6 @@
     [self resetGame];
 }
 
-
 - (void)resetGame
 {
     [self setGame: [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
@@ -82,59 +82,6 @@
 - (IBAction)toggleMatchCount:(UISegmentedControl *)sender
 {
     [self resetGame];
-}
-
-- (IBAction)changePreviousMoveSlider:(UISlider *)sender {
-    int position = lroundl([self.previousMoveSlider value]);
-    [self.previousMoveSlider setValue:position animated:NO];
-    [self updatePreviousMoveLabel];
-
-}
-
-- (void)updatePreviousMoveLabel
-{
-    if ([self.previousMoves count])
-    {
-        [self.previousMoveLabel setAttributedText:[self.previousMoves objectAtIndex:([self.previousMoveSlider value] -1)]];
-    }
-    //If not at the end of the slider, set it to dark gray.
-    if ([self.previousMoveSlider value] != [self.previousMoveSlider maximumValue])
-    {
-        [self.previousMoveLabel setTextColor:[UIColor darkGrayColor]];
-    }
-    //otherwise, set it to the dark text color
-    else
-    {
-        [self.previousMoveLabel setTextColor:[UIColor darkTextColor]];
-    }
-}
-
-- (void)updateSlider
-{
-    if ([self.previousMoves count] > 1)
-    {
-        [self enableSlider];
-    }
-    else
-    {
-        [self disableSlider];
-    }
-}
-
-- (void)disableSlider
-{
-    [self.previousMoveSlider setMinimumValue:0];
-    [self.previousMoveSlider setMaximumValue:1];
-    [self.previousMoveSlider setValue:1 animated:NO];
-    [self.previousMoveSlider setEnabled:NO];
-}
-
-- (void)enableSlider
-{
-    [self.previousMoveSlider setMinimumValue:1];
-    [self.previousMoveSlider setMaximumValue:([self.previousMoves count])];
-    [self.previousMoveSlider setValue:[self.previousMoveSlider maximumValue] animated:NO];
-    [self.previousMoveSlider setEnabled:YES];
 }
 
 - (CardMatchingGame *)game
@@ -212,8 +159,12 @@
         cardButton.enabled = !card.isMatched;
     }
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long) self.game.score];
-    [self updateSlider];
-    [self updatePreviousMoveLabel];
+    if ([self.previousMoves count])
+    {
+        [self.previousMoveLabel setAttributedText:[self.previousMoves lastObject]];
+    }
+//    [self updateSlider];
+//    [self updatePreviousMoveLabel];
     
 }
 

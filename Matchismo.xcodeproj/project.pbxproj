@@ -27,6 +27,7 @@
 		D46314261846D7E7005E6231 /* PlayingCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = D46314251846D7E7005E6231 /* PlayingCardDeck.m */; };
 		D463142918491DC0005E6231 /* CardMatchingGame.m in Sources */ = {isa = PBXBuildFile; fileRef = D463142818491DC0005E6231 /* CardMatchingGame.m */; };
 		D4EF1CD11860CD72005AA16E /* PlayingCardGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EF1CD01860CD72005AA16E /* PlayingCardGameViewController.m */; };
+		D4EF1CD418611CEE005AA16E /* CardGameHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EF1CD318611CEE005AA16E /* CardGameHistoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		D463142818491DC0005E6231 /* CardMatchingGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardMatchingGame.m; path = Model/CardMatchingGame.m; sourceTree = "<group>"; };
 		D4EF1CCF1860CD72005AA16E /* PlayingCardGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayingCardGameViewController.h; sourceTree = "<group>"; };
 		D4EF1CD01860CD72005AA16E /* PlayingCardGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayingCardGameViewController.m; sourceTree = "<group>"; };
+		D4EF1CD218611CEE005AA16E /* CardGameHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardGameHistoryViewController.h; sourceTree = "<group>"; };
+		D4EF1CD318611CEE005AA16E /* CardGameHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardGameHistoryViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				D46313F418469AE2005E6231 /* Main.storyboard */,
+				D4EF1CD218611CEE005AA16E /* CardGameHistoryViewController.h */,
+				D4EF1CD318611CEE005AA16E /* CardGameHistoryViewController.m */,
 				D46313F718469AE2005E6231 /* CardGameViewController.h */,
 				D46313F818469AE2005E6231 /* CardGameViewController.m */,
 				D4EF1CCF1860CD72005AA16E /* PlayingCardGameViewController.h */,
@@ -295,6 +300,7 @@
 				D463142918491DC0005E6231 /* CardMatchingGame.m in Sources */,
 				D46314261846D7E7005E6231 /* PlayingCardDeck.m in Sources */,
 				D46313EF18469AE2005E6231 /* main.m in Sources */,
+				D4EF1CD418611CEE005AA16E /* CardGameHistoryViewController.m in Sources */,
 				D46314191846B1C5005E6231 /* Card.m in Sources */,
 				D4EF1CD11860CD72005AA16E /* PlayingCardGameViewController.m in Sources */,
 			);
