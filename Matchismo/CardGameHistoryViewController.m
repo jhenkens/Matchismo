@@ -15,5 +15,10 @@
 
 @implementation CardGameHistoryViewController
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    [self.previousMovesTextView setAttributedText:self.historyAttributedstring];
+}
 
 @end

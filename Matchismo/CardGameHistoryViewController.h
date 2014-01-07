@@ -10,4 +10,6 @@
 
 @interface CardGameHistoryViewController : UIViewController
 
+@property (strong, nonatomic) NSAttributedString *historyAttributedstring;
+
 @end

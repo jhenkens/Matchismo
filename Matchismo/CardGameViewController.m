@@ -8,6 +8,7 @@
 
 #import "CardGameViewController.h"
 #import "CardMatchingGame.h"
+#import "CardGameHistoryViewController.h"
 
 @interface CardGameViewController ()
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
@@ -54,7 +55,27 @@
 {
     return nil;
 }
+
+
 //  Non-abstract method
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"CardGameHistory"])
+    {
+        if ([segue.destinationViewController isKindOfClass:[CardGameHistoryViewController class]])
+        {
+            CardGameHistoryViewController *cghvc = (CardGameHistoryViewController *)segue.destinationViewController;
+            NSMutableAttributedString *stringToSend = [[NSMutableAttributedString alloc] init];
+            for (NSAttributedString *hist in self.previousMoves)
+            {
+                [stringToSend appendAttributedString:hist];
+                [stringToSend.mutableString appendString:@"\n"];
+            }
+            [cghvc setHistoryAttributedstring:stringToSend];
+        }
+    }
+}
+
 - (NSMutableArray *)previousMoves
 {
     if (!_previousMoves){
